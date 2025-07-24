@@ -1,65 +1,99 @@
-import React, { useState, forwardRef } from 'react';
-import styled from 'styled-components';
-import { TextInput, TextInputProps, View, StyleSheet } from 'react-native';
-import { Text } from '../Typography/Text';
-import { useTheme } from '../../hooks/useTheme';
+import React, { forwardRef, useState } from 'react';
+import styled from 'styled-components/native';
+import { TextInput, TextInputProps, View, Text, Platform } from 'react-native';
+import { Icon } from '../Icon/Icon';
+
+type InputVariant = 'filled' | 'outline' | 'underline';
+type InputSize = 'sm' | 'md' | 'lg';
 
 interface InputProps extends TextInputProps {
+  variant?: InputVariant;
+  size?: InputSize;
   label?: string;
-  error?: string;
-  leftElement?: React.ReactNode;
-  rightElement?: React.ReactNode;
-  variant?: 'outline' | 'filled' | 'underlined';
+  helperText?: string;
+  error?: boolean | string;
+  success?: boolean | string;
+  leftIcon?: React.ReactNode;
+  rightIcon?: React.ReactNode;
+  mask?: 'phone' | 'credit-card' | 'date' | RegExp;
 }
 
-const InputContainer = styled(View)`
-  margin-bottom: ${({ theme }) => theme.spacing['3']}px;
+const InputContainer = styled.View<{ variant?: InputVariant }>`
+  margin-bottom: 16px;
 `;
 
-const InputLabel = styled(Text)`
-  margin-bottom: ${({ theme }) => theme.spacing['1']}px;
-  font-size: ${({ theme }) => theme.typography.fontSize.sm};
-  color: ${({ theme }) => theme.colors.text};
-`;
-
-const InputWrapper = styled(View)<{ isFocused: boolean; hasError: boolean; variant: string }>`
+const InputWrapper = styled.View<{ 
+  variant?: InputVariant;
+  isFocused: boolean;
+  hasError: boolean;
+  hasSuccess: boolean;
+}>`
   flex-direction: row;
   align-items: center;
-  border-radius: ${({ theme, variant }) => variant === 'outline' ? theme.borders.radius.sm : 0};
-  background-color: ${({ theme, variant }) => variant === 'filled' ? theme.colors.cardBackground : 'transparent'};
-  border-width: ${({ theme, variant }) => variant === 'outline' ? theme.borders.width.thin : 0};
-  border-bottom-width: ${({ variant }) => variant === 'underlined' ? 1 : 0};
-  border-color: ${({ theme, isFocused, hasError }) => 
-    hasError ? theme.colors.error : 
-    isFocused ? theme.colors.primary : theme.colors.muted};
-  padding: ${({ theme }) => `${theme.spacing['2']}px ${theme.spacing['3']}px`};
+  background-color: ${({ variant, theme }) => 
+    variant === 'filled' ? theme.input.filled.backgroundColor : 'transparent'};
+  border-width: ${({ variant, theme }) => 
+    variant === 'outline' ? theme.borders.width.thin : 0}px;
+  border-bottom-width: ${({ variant }) => 
+    variant === 'underline' ? 1 : 0}px;
+  border-color: ${({ isFocused, hasError, hasSuccess, theme }) => 
+    hasError ? theme.colors.error :
+    hasSuccess ? theme.colors.success :
+    isFocused ? theme.colors.primary : 
+    theme.colors.border};
+  border-radius: ${({ variant, theme }) => 
+    variant === 'outline' ? theme.borders.radius.md : 0}px;
+  padding: ${({ size }) => 
+    size === 'sm' ? '8px 12px' :
+    size === 'md' ? '12px 16px' :
+    '16px 20px'};
 `;
 
-const StyledInput = styled(TextInput)`
+const StyledInput = styled.TextInput<{ hasLeftIcon: boolean; hasRightIcon: boolean }>`
   flex: 1;
-  font-size: ${({ theme }) => theme.typography.fontSize.md};
+  font-size: ${({ theme }) => theme.typography.fontSize.md}px;
   color: ${({ theme }) => theme.colors.text};
-  padding: ${({ theme }) => `${theme.spacing['1']}px 0`};
+  padding-left: ${({ hasLeftIcon }) => hasLeftIcon ? 8 : 0}px;
+  padding-right: ${({ hasRightIcon }) => hasRightIcon ? 8 : 0}px;
 `;
 
-const InputError = styled(Text)`
-  margin-top: ${({ theme }) => theme.spacing['1']}px;
-  font-size: ${({ theme }) => theme.typography.fontSize.xs};
-  color: ${({ theme }) => theme.colors.error};
+const Label = styled(Text)<{ isFocused: boolean; hasError: boolean; hasSuccess: boolean }>`
+  margin-bottom: 4px;
+  font-size: ${({ theme }) => theme.typography.fontSize.sm}px;
+  color: ${({ isFocused, hasError, hasSuccess, theme }) => 
+    hasError ? theme.colors.error :
+    hasSuccess ? theme.colors.success :
+    isFocused ? theme.colors.primary : 
+    theme.colors.textSecondary};
+`;
+
+const HelperText = styled(Text)<{ hasError: boolean; hasSuccess: boolean }>`
+  margin-top: 4px;
+  font-size: ${({ theme }) => theme.typography.fontSize.sm}px;
+  color: ${({ hasError, hasSuccess, theme }) => 
+    hasError ? theme.colors.error :
+    hasSuccess ? theme.colors.success :
+    theme.colors.textSecondary};
 `;
 
 export const Input = forwardRef<TextInput, InputProps>(({
-  label,
-  error,
-  leftElement,
-  rightElement,
   variant = 'outline',
+  size = 'md',
+  label,
+  helperText,
+  error = false,
+  success = false,
+  leftIcon,
+  rightIcon,
   onFocus,
   onBlur,
   ...props
 }, ref) => {
   const [isFocused, setIsFocused] = useState(false);
-  const theme = useTheme();
+  const hasError = !!error;
+  const hasSuccess = !!success;
+  const hasLeftIcon = !!leftIcon;
+  const hasRightIcon = !!rightIcon;
 
   const handleFocus = (e: any) => {
     setIsFocused(true);
@@ -72,32 +106,49 @@ export const Input = forwardRef<TextInput, InputProps>(({
   };
 
   return (
-    <InputContainer>
-      {label && <InputLabel>{label}</InputLabel>}
-      <InputWrapper 
-        isFocused={isFocused} 
-        hasError={!!error}
+    <InputContainer variant={variant}>
+      {label && (
+        <Label 
+          isFocused={isFocused}
+          hasError={hasError}
+          hasSuccess={hasSuccess}
+        >
+          {label}
+        </Label>
+      )}
+      <InputWrapper
         variant={variant}
+        isFocused={isFocused}
+        hasError={hasError}
+        hasSuccess={hasSuccess}
       >
-        {leftElement && (
-          <View style={{ marginRight: 2 }}>
-            {leftElement}
+        {leftIcon && (
+          <View style={{ marginRight: 8 }}>
+            {leftIcon}
           </View>
         )}
         <StyledInput
           ref={ref}
-          placeholderTextColor={'grey'}
+          hasLeftIcon={hasLeftIcon}
+          hasRightIcon={hasRightIcon}
+          placeholderTextColor={theme.colors.textSecondary}
           onFocus={handleFocus}
           onBlur={handleBlur}
           {...props}
         />
-        {rightElement && (
-          <View style={{ marginLeft: 2 }}>
-            {rightElement}
+        {rightIcon && (
+          <View style={{ marginLeft: 8 }}>
+            {rightIcon}
           </View>
         )}
       </InputWrapper>
-      {error && <InputError>{error}</InputError>}
+      {(helperText || error || success) && (
+        <HelperText hasError={hasError} hasSuccess={hasSuccess}>
+          {typeof error === 'string' ? error : 
+           typeof success === 'string' ? success : 
+           helperText}
+        </HelperText>
+      )}
     </InputContainer>
   );
 });

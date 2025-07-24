@@ -1,27 +1,26 @@
 import React from 'react';
 import { Button } from './Button';
 import { BlocksProvider } from '../../providers/BlocksProvider';
-import { Meta, StoryFn } from '@storybook/react';
+import { DefaultTheme } from '../../themes/default';
+// import { Icon } from '../Icon/Icon';
 
-const meta: Meta<typeof Button> = {
+export default {
   title: 'Components/Button',
   component: Button,
   decorators: [
-    (Story: any) => (
-      <BlocksProvider>
+    (Story) => (
+      <BlocksProvider theme={DefaultTheme}>
         <Story />
       </BlocksProvider>
     ),
   ],
 };
 
-export default meta;
+const Template = (args) => <Button {...args} />;
 
-const Template: StoryFn<typeof Button> = (args) => <Button {...args} />;
-
-export const Primary = Template.bind({});
-Primary.args = {
-  children: 'Primary Button',
+export const Solid = Template.bind({});
+Solid.args = {
+  children: 'Solid Button',
   variant: 'solid',
 };
 
@@ -29,4 +28,25 @@ export const Outline = Template.bind({});
 Outline.args = {
   children: 'Outline Button',
   variant: 'outline',
+};
+
+export const WithIcon = Template.bind({});
+WithIcon.args = {
+  children: 'With Icon',
+  icon: 'icon',
+  iconPosition: 'left',
+};
+
+export const Loading = Template.bind({});
+Loading.args = {
+  children: 'Loading Button',
+  loading: true,
+};
+
+export const FAB = Template.bind({});
+FAB.args = {
+  icon: 'Icon',
+  variant: 'fab',
+  shape: 'circle',
+  size: 'lg',
 };
