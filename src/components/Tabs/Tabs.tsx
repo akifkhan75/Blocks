@@ -19,7 +19,7 @@ interface TabsProps {
 
 const TabsContainer = styled(View)<{ variant: 'top' | 'bottom' }>`
   flex-direction: row;
-  ${({ variant }) => variant === 'bottom' ? `
+  ${({ variant, theme }) => variant === 'bottom' ? `
     position: absolute;
     bottom: 0;
     left: 0;
@@ -42,7 +42,7 @@ const Indicator = styled(View)`
   position: absolute;
   bottom: 0;
   height: 3px;
-  background-color: ${theme.colors.primary};
+  background-color: ${({theme}) => theme.colors.primary};
   border-radius: 3px;
   transition: left 0.3s ease, width 0.3s ease;
 `;
@@ -77,11 +77,11 @@ export const Tabs: React.FC<TabsProps> = ({
           >
             {item.label}
           </Text>
-          {item.badge && (
+          {/* {item.badge && (
             <Badge>
               <Text size="xs" color="white">{item.badge}</Text>
             </Badge>
-          )}
+          )} */}
         </TabItem>
       ))}
       {showIndicator && (

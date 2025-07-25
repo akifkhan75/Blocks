@@ -1,7 +1,8 @@
 import React, { forwardRef, useState } from 'react';
 import styled from 'styled-components/native';
 import { TextInput, TextInputProps, View, Text, Platform } from 'react-native';
-import { Icon } from '../Icon/Icon';
+import { useTheme } from '../../hooks/useTheme';
+// import { Icon } from '../Icon/Icon';
 
 type InputVariant = 'filled' | 'outline' | 'underline';
 type InputSize = 'sm' | 'md' | 'lg';
@@ -64,7 +65,7 @@ const Label = styled(Text)<{ isFocused: boolean; hasError: boolean; hasSuccess: 
     hasError ? theme.colors.error :
     hasSuccess ? theme.colors.success :
     isFocused ? theme.colors.primary : 
-    theme.colors.textSecondary};
+    theme.colors.text};
 `;
 
 const HelperText = styled(Text)<{ hasError: boolean; hasSuccess: boolean }>`
@@ -94,6 +95,7 @@ export const Input = forwardRef<TextInput, InputProps>(({
   const hasSuccess = !!success;
   const hasLeftIcon = !!leftIcon;
   const hasRightIcon = !!rightIcon;
+  const theme = useTheme();
 
   const handleFocus = (e: any) => {
     setIsFocused(true);
@@ -131,7 +133,7 @@ export const Input = forwardRef<TextInput, InputProps>(({
           ref={ref}
           hasLeftIcon={hasLeftIcon}
           hasRightIcon={hasRightIcon}
-          placeholderTextColor={theme.colors.textSecondary}
+          // placeholderTextColor={theme.colors.text}
           onFocus={handleFocus}
           onBlur={handleBlur}
           {...props}

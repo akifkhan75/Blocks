@@ -33,7 +33,7 @@ Outline.args = {
 export const WithIcon = Template.bind({});
 WithIcon.args = {
   children: 'With Icon',
-  icon: 'icon',
+  icon: '',
   iconPosition: 'left',
 };
 
@@ -45,7 +45,7 @@ Loading.args = {
 
 export const FAB = Template.bind({});
 FAB.args = {
-  icon: 'Icon',
+  icon: '',
   variant: 'fab',
   shape: 'circle',
   size: 'lg',

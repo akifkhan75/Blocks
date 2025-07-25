@@ -3,7 +3,7 @@ import styled from 'styled-components/native';
 import { ActivityIndicator, Platform, TouchableOpacity } from 'react-native';
 import { Text } from '../Typography/Text';
 import { useHaptic } from '../../hooks/useHaptic';
-import { ThemeType } from 'styled-components';
+import { useTheme } from 'styled-components';
 
 type ButtonVariant = 'solid' | 'outline' | 'ghost' | 'glass' | 'fab';
 type ButtonSize = 'sm' | 'md' | 'lg';
@@ -17,7 +17,7 @@ interface ButtonProps {
   iconPosition?: IconPosition;
   loading?: boolean;
   disabled?: boolean;
-  fullWidth?: boolean,
+  fullWidth?: boolean;
   hapticFeedback?: 'light' | 'medium' | 'heavy';
   shape?: ButtonShape;
   children?: React.ReactNode;
@@ -33,16 +33,7 @@ const getButtonSize = (size: ButtonSize) => {
   }
 };
 
-const getBorderRadius = (shape: ButtonShape, theme: any) => {
-  switch (shape) {
-    case 'rounded': return theme.borders.radius.md;
-    case 'pill': return theme.borders.radius.full;
-    case 'circle': return theme.borders.radius.full;
-    default: return theme.borders.radius.sm;
-  }
-};
-
-const ButtonContainer = styled(TouchableOpacity).attrs<ButtonProps>({
+const ButtonContainer = styled.TouchableOpacity.attrs<ButtonProps>({
   activeOpacity: 0.7,
 })<ButtonProps>`
   flex-direction: row;
@@ -50,21 +41,21 @@ const ButtonContainer = styled(TouchableOpacity).attrs<ButtonProps>({
   justify-content: center;
   min-height: ${({ size = 'md' }) => getButtonSize(size)}px;
   
-  ${({ shape, size = 'md' }) =>
+  ${({ shape = 'rectangle', size = 'md', theme }) => 
     shape === 'circle' ? `
       width: ${getButtonSize(size)}px;
       height: ${getButtonSize(size)}px;
-      border-radius: ${({ theme }) => theme.borders.radius.full}px;
+      border-radius: ${theme.borders.radius.full}px;
     ` : `
       padding: 16px;
-      border-radius: ${({ theme }) => theme.borders.radius.md}px;
+      border-radius: ${theme.borders.radius.md}px;
     `
   }
 
   ${({ fullWidth }) => fullWidth && 'width: 100%;'}
   opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
 
-  ${({ variant = 'solid', theme }: { variant?: ButtonVariant, theme: ThemeType }) => {
+  ${({ variant = 'solid', theme }) => {
     switch (variant) {
       case 'solid':
         return `
@@ -88,10 +79,11 @@ const ButtonContainer = styled(TouchableOpacity).attrs<ButtonProps>({
       case 'fab':
         return `
           background-color: ${theme.colors.primary};
-          box-shadow: ${theme.shadows.md.shadowColor} 
-            ${theme.shadows.md.shadowOffset.width}px 
-            ${theme.shadows.md.shadowOffset.height}px 
-            ${theme.shadows.md.shadowRadius}px;
+          shadow-color: ${theme.shadows.md.shadowColor};
+          shadow-offset: ${theme.shadows.md.shadowOffset.width}px ${theme.shadows.md.shadowOffset.height}px;
+          shadow-opacity: ${theme.shadows.md.shadowOpacity};
+          shadow-radius: ${theme.shadows.md.shadowRadius}px;
+          elevation: ${theme.shadows.md.elevation};
         `;
       default:
         return `
@@ -102,12 +94,12 @@ const ButtonContainer = styled(TouchableOpacity).attrs<ButtonProps>({
 `;
 
 const ButtonText = styled(Text)<{ variant?: ButtonVariant }>`
-  color: ${({ variant = 'solid', theme }: { variant?: ButtonVariant, theme: ThemeType }) =>
+  color: ${({ variant = 'solid', theme }) =>
     variant === 'solid' || variant === 'fab' 
       ? theme.colors.text 
       : theme.colors.primary};
-  margin-left: ${({ hasLeftIcon }) => hasLeftIcon ? '8px' : '0'};
-  margin-right: ${({ hasRightIcon }) => hasRightIcon ? '8px' : '0'};
+  margin-left: ${({ iconPosition }) => iconPosition === 'left' ? '8px' : '0'};
+  margin-right: ${({ iconPosition }) => iconPosition === 'right' ? '8px' : '0'};
 `;
 
 export const Button: React.FC<ButtonProps> = ({
@@ -123,6 +115,7 @@ export const Button: React.FC<ButtonProps> = ({
   onPress,
 }) => {
   const { triggerHaptic } = useHaptic();
+  const theme = useTheme();
 
   const handlePress = () => {
     if (hapticFeedback) triggerHaptic(hapticFeedback);
@@ -143,19 +136,17 @@ export const Button: React.FC<ButtonProps> = ({
       {loading ? (
         <ActivityIndicator
           size="small"
-          color={variant === 'solid' || variant === 'fab' 
-            ? theme.colors.text 
-            : theme.colors.primary}
+          color={
+            variant === 'solid' || variant === 'fab' 
+              ? theme.colors.text 
+              : theme.colors.primary
+          }
         />
       ) : (
         <>
           {hasLeftIcon && icon}
           {children && (
-            <ButtonText 
-              variant={variant}
-              hasLeftIcon={hasLeftIcon}
-              hasRightIcon={hasRightIcon}
-            >
+            <ButtonText variant={variant} iconPosition={iconPosition}>
               {children}
             </ButtonText>
           )}

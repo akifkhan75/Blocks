@@ -1,6 +1,5 @@
-import { ThemeType } from "styled-components";
 
-export const DefaultTheme: ThemeType = {
+export const DefaultTheme = {
     colors: {
       primary: '#0A84FF',
       secondary: '#5E5CE6',
@@ -82,6 +81,25 @@ export const DefaultTheme: ThemeType = {
         shadowOpacity: 0.3,
         shadowRadius: 4.65,
         elevation: 8,
+      },
+    },
+    buttons: {
+      solid: {
+        backgroundColor: '#6200EE',
+        textColor: '#FFFFFF',
+      },
+      outline: {
+        borderColor: '#6200EE',
+        textColor: '#6200EE',
+      },
+      glass: {
+        blurAmount: 10,
+        overlayColor: 'rgba(255,255,255,0.2)',
+      },
+    },
+    input: {
+      filled: {
+        backgroundColor: '#F5F5F5',
       },
     },
     zIndices: {

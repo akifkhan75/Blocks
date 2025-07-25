@@ -1,7 +1,7 @@
 import React from 'react';
 import { Input } from './Input';
 import { BlocksProvider } from '../../providers/BlocksProvider';
-import { DefaultTheme } from '../../themes/default';
+import { LightTheme } from '../../themes';
 // import { Icon } from '../Icon/Icon';
 
 export default {
@@ -9,7 +9,7 @@ export default {
   component: Input,
   decorators: [
     (Story) => (
-      <BlocksProvider theme={DefaultTheme}>
+      <BlocksProvider theme={LightTheme}>
         <Story />
       </BlocksProvider>
     ),
