@@ -19,6 +19,7 @@ export { Grid } from './components/Grid/Grid';
 export { Stack } from './components/Stack/Stack';
 export { Divider } from './components/Divider/Divider';
 export { Spacer } from './components/Spacer/Spacer';
+export { Tabs } from './components/Tabs';
 // export { BottomTabs } from './components/BottomTabs/BottomTabs';
 // export { TopTabs } from './components/TopTabs/TopTabs';
 export { Header } from './components/Header/Header';
@@ -29,6 +30,7 @@ export { Modal } from './components/Modal/Modal';
 // export { DatePicker } from './components/DatePicker/DatePicker';
 // export { BarChart } from './components/Charts/BarChart';
 // export { PieChart } from './components/Charts/PieChart';
+export { List, SwipeableListItem, SwipeableListItemEnhanced } from './components/List';
 // export { SwipeableList } from './components/SwipeableList/SwipeableList';
 // export { ImageViewer } from './components/ImageViewer/ImageViewer';
 
