@@ -96,7 +96,7 @@ const ButtonContainer = styled.TouchableOpacity.attrs<ButtonProps>({
 const ButtonText = styled(Text)<{ variant?: ButtonVariant }>`
   color: ${({ variant = 'solid', theme }) =>
     variant === 'solid' || variant === 'fab' 
-      ? theme.colors.text 
+      ? 'white' 
       : theme.colors.primary};
   margin-left: ${({ iconPosition }) => iconPosition === 'left' ? '8px' : '0'};
   margin-right: ${({ iconPosition }) => iconPosition === 'right' ? '8px' : '0'};

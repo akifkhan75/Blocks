@@ -1,58 +1,42 @@
+// src/components/Grid/Grid.tsx
 import React from 'react';
-import styled from 'styled-components';
-import { View, ViewProps } from 'react-native';
-import { gridResponsiveStyles } from '../../utils/gridSystem';
+import styled from 'styled-components/native';
+import { View } from 'react-native';
 
-interface GridProps extends ViewProps {
-  container?: boolean;
-  item?: boolean;
+interface GridProps {
+  columns?: number;
   spacing?: number;
-  xs?: number;
-  sm?: number;
-  md?: number;
-  lg?: number;
-  xl?: number;
+  children?: React.ReactNode;
 }
 
 const GridContainer = styled(View)<{ spacing: number }>`
   flex-direction: row;
   flex-wrap: wrap;
-  margin: ${({ spacing }) => -spacing / 2}px;
+  margin-left: -${({ spacing }) => spacing / 2}px;
+  margin-right: -${({ spacing }) => spacing / 2}px;
 `;
 
-const GridItem = styled(View)<{ spacing: number; size?: number | object }>`
-  padding: ${({ spacing }) => spacing / 2}px;
-  ${({ size }) => size && gridResponsiveStyles(size)}
+const GridItem = styled(View)<{ columns: number, spacing: number }>`
+  width: ${({ columns }) => 100 / columns}%;
+  padding-left: ${({ spacing }) => spacing / 2}px;
+  padding-right: ${({ spacing }) => spacing / 2}px;
+  margin-bottom: ${({ spacing }) => spacing}px;
 `;
 
-export const Grid = ({
-  container = false,
-  item = false,
-  spacing = 0,
-  xs,
-  sm,
-  md,
-  lg,
-  xl,
+export const Grid: React.FC<GridProps> & { Item: React.FC } = ({
+  columns = 2,
+  spacing = 16,
   children,
-  ...props
-}: GridProps) => {
-  if (container) {
-    return (
-      <GridContainer spacing={spacing} {...props}>
-        {children}
-      </GridContainer>
-    );
-  }
-
-  if (item) {
-    const sizeProps = { xs, sm, md, lg, xl };
-    return (
-      <GridItem spacing={spacing} size={sizeProps} {...props}>
-        {children}
-      </GridItem>
-    );
-  }
-
-  return <GridItem spacing={spacing} {...props}>{children}</GridItem>;
+}) => {
+  return (
+    <GridContainer spacing={spacing}>
+      {React.Children.map(children, (child, index) => (
+        <GridItem key={index} columns={columns} spacing={spacing}>
+          {child}
+        </GridItem>
+      ))}
+    </GridContainer>
+  );
 };
+
+Grid.Item = ({ children }) => <>{children}</>;

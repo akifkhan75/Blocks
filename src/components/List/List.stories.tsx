@@ -54,29 +54,29 @@ export const BasicList = () => (
   />
 );
 
-// export const SwipeableList = () => (
-//   <List
-//     variant="basic"
-//     data={sampleData}
-//     renderItem={({ item }) => (
-//       <SwipeableListItem
-//         leftActions={[
-//           <Button variant="ghost" size="sm" onPress={() => console.log('Archive')}>
-//             Archive
-//           </Button>
-//         ]}
-//         rightActions={[
-//           <Button variant="ghost" size="sm" onPress={() => console.log('Delete')}>
-//             Delete
-//           </Button>
-//         ]}
-//       >
-//         <Heading level="h5">{item.title}</Heading>
-//         <Text>{item.description}</Text>
-//       </SwipeableListItem>
-//     )}
-//   />
-// );
+export const SwipeableList = () => (
+  <List
+    variant="basic"
+    data={sampleData}
+    renderItem={({ item }) => (
+      <SwipeableListItem
+        leftActions={[
+          <Button variant="ghost" size="sm" onPress={() => console.log('Archive')}>
+            Archive
+          </Button>
+        ]}
+        rightActions={[
+          <Button variant="ghost" size="sm" onPress={() => console.log('Delete')}>
+            Delete
+          </Button>
+        ]}
+      >
+        <Heading level="h5">{item.title}</Heading>
+        <Text>{item.description}</Text>
+      </SwipeableListItem>
+    )}
+  />
+);
 
 export const ExpandableList = () => {
   const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({});
