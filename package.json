@@ -1,7 +1,7 @@
 {
+  "name": "blocks-react-native",
   "version": "1.0.0",
-  "private": true,
-  "name": "storybook-tutorial-template",
+  "public": true,
   "packageManager": "yarn@4.5.0",
   "scripts": {
     "start": "expo start",
