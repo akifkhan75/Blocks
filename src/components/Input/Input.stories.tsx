@@ -1,15 +1,15 @@
 import React from 'react';
 import { Input } from './Input';
 import { BlocksProvider } from '../../providers/BlocksProvider';
-import { LightTheme } from '../../themes';
-// import { Icon } from '../Icon/Icon';
+import { DefaultTheme } from '../../themes/default';
+import { Icon } from '../Icon/Icon';
 
 export default {
   title: 'Components/Input',
   component: Input,
   decorators: [
     (Story) => (
-      <BlocksProvider theme={LightTheme}>
+      <BlocksProvider theme={DefaultTheme}>
         <Story />
       </BlocksProvider>
     ),
@@ -33,7 +33,7 @@ export const WithIcon = Template.bind({});
 WithIcon.args = {
   label: 'Search',
   placeholder: 'Search...',
-  leftIcon: '',
+  leftIcon: <Icon name="search" />,
 };
 
 export const ErrorState = Template.bind({});

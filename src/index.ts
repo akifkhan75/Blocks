@@ -2,11 +2,10 @@
 export { BlocksProvider } from './providers/BlocksProvider';
 
 // Components
-export { Button } from './components/Button/Button';
-export { Card } from './components/Card/Card';
-export { Input } from './components/Input/Input';
-export { Text } from './components/Typography/Text';
-export { Heading } from './components/Typography/Heading';
+export { Button } from './components/Button';
+export { Card } from './components/Card';
+export { Input } from './components/Input';
+export { Text, Heading } from './components/Typography';
 // export { Label } from './components/Typography/Label';
 export { Icon } from './components/Icon/Icon';
 export { Avatar } from './components/Avatar/Avatar';
@@ -20,17 +19,15 @@ export { Stack } from './components/Stack/Stack';
 export { Divider } from './components/Divider/Divider';
 export { Spacer } from './components/Spacer/Spacer';
 export { Tabs } from './components/Tabs';
-// export { BottomTabs } from './components/BottomTabs/BottomTabs';
-// export { TopTabs } from './components/TopTabs/TopTabs';
 export { Header } from './components/Header/Header';
 export { Toast } from './components/Toast/Toast';
 // export { Snackbar } from './components/Snackbar/Snackbar';
 export { Modal } from './components/Modal/Modal';
+export { List, SwipeableListItem, SwipeableListItemEnhanced } from './components/List';
 // export { Tooltip } from './components/Tooltip/Tooltip';
 // export { DatePicker } from './components/DatePicker/DatePicker';
 // export { BarChart } from './components/Charts/BarChart';
 // export { PieChart } from './components/Charts/PieChart';
-export { List, SwipeableListItem, SwipeableListItemEnhanced } from './components/List';
 // export { SwipeableList } from './components/SwipeableList/SwipeableList';
 // export { ImageViewer } from './components/ImageViewer/ImageViewer';
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components/native';
 import { TouchableOpacity, View } from 'react-native';
-// import { Icon } from '../Icon/Icon';
+import { Icon } from '../Icon/Icon';
 import { Text } from '../Typography/Text';
 
 interface CheckboxProps {
@@ -57,7 +57,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   return (
     <CheckboxContainer onPress={handlePress} disabled={disabled}>
       <CheckboxBox checked={checked} disabled={disabled} size={size}>
-        {/* {checked && <Icon name="check" size={size} color="white" />} */}
+        {checked && <Icon name="check" size={size} color="white" />}
       </CheckboxBox>
       {label && <CheckboxLabel>{label}</CheckboxLabel>}
     </CheckboxContainer>

@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from './Button';
 import { BlocksProvider } from '../../providers/BlocksProvider';
 import { DefaultTheme } from '../../themes/default';
-// import { Icon } from '../Icon/Icon';
+import { Icon } from '../Icon/Icon';
 
 export default {
   title: 'Components/Button',
@@ -33,7 +33,7 @@ Outline.args = {
 export const WithIcon = Template.bind({});
 WithIcon.args = {
   children: 'With Icon',
-  icon: '',
+  icon: <Icon name="star" />,
   iconPosition: 'left',
 };
 
@@ -45,7 +45,7 @@ Loading.args = {
 
 export const FAB = Template.bind({});
 FAB.args = {
-  icon: '',
+  icon: <Icon name="plus" />,
   variant: 'fab',
   shape: 'circle',
   size: 'lg',

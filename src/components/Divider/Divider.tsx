@@ -19,7 +19,7 @@ const DividerLine = styled(View)<DividerProps>`
       : 'width: 1px; height: 100%;'}
   background-color: ${({ color, theme }) => color || theme.colors.border};
   margin: ${({ margin = 0 }) => margin}px 0;
-  ${({ thickness = 1 }) => `
+  ${({ thickness = 1, orientation }) => `
     ${orientation === 'horizontal' ? 'height' : 'width'}: ${thickness}px;
   `}
 `;

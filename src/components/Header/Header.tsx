@@ -22,7 +22,7 @@ const HeaderContainer = styled(View)<{ variant: HeaderVariant, showBorder: boole
   height: ${Platform.OS === 'ios' ? 88 : 56}px;
   padding-top: ${Platform.OS === 'ios' ? 44 : 16}px;
   background-color: ${({ variant, theme }) => 
-    variant === 'transparent' ? 'transparent' : theme.header.backgroundColor};
+    variant === 'transparent' ? 'transparent' : theme.colors.primary};
   ${({ variant }) => variant === 'floating' && `
     position: absolute;
     top: 0;
