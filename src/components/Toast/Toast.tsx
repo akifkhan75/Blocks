@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components/native';
 import { Animated, Easing, View } from 'react-native';
 import { Text } from '../Typography/Text';
-// import { Icon } from '../Icon/Icon';
+import { Icon } from '../Icon/Icon';
 
 type ToastType = 'success' | 'error' | 'warning' | 'info';
 
@@ -78,14 +78,14 @@ export const Toast: React.FC<ToastProps> = ({
       position={position}
       style={{ opacity }}
     >
-      {/* {showIcon && (
+      {showIcon && (
         <Icon 
           name={getIconName()} 
           color="white" 
           size={20} 
           style={{ marginRight: 8 }} 
         />
-      )} */}
+      )}
       <Text color="white">{message}</Text>
     </ToastContainer>
   );

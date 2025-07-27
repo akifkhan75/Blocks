@@ -10,8 +10,7 @@ import {
   Animated
 } from 'react-native';
 import { useTheme } from '../../hooks/useTheme';
-// import { Icon } from '../Icon/Icon';
-import { Text } from '../Typography';
+import { Heading, Text } from '../Typography';
 import { Button } from '../Button';
 
 type ModalVariant = 'basic' | 'bottom-sheet' | 'fullscreen' | 'alert' | 'confirmation' | 'form';
@@ -39,6 +38,12 @@ interface ModalHeaderProps {
 
 interface ModalFooterProps {
   children?: React.ReactNode;
+}
+
+interface ModalComponent extends React.ForwardRefExoticComponent<ModalProps & React.RefAttributes<any>> {
+  Header: React.FC<ModalHeaderProps>;
+  Body: typeof ModalBody;
+  Footer: React.FC<ModalFooterProps>;
 }
 
 const ModalContainer = styled.View`
@@ -88,7 +93,7 @@ const ModalFooter = styled.View`
   gap: 8px;
 `;
 
-export const Modal = forwardRef<any, ModalProps>(({
+const ModalComponent = forwardRef<any, ModalProps>(({
   variant = 'basic',
   animation = 'fade',
   visible = false,
@@ -105,7 +110,6 @@ export const Modal = forwardRef<any, ModalProps>(({
   const translateY = new Animated.Value(0);
   const opacity = new Animated.Value(0);
 
-  // For swipe to dismiss
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => dismissOnSwipe,
     onPanResponderMove: (_, gestureState) => {
@@ -211,9 +215,9 @@ export const Modal = forwardRef<any, ModalProps>(({
       </KeyboardAvoidingView>
     </RNModal>
   );
-});
+}) as ModalComponent;
 
-export const ModalHeaderComponent: React.FC<ModalHeaderProps> = ({
+const ModalHeaderComponent: React.FC<ModalHeaderProps> = ({
   title,
   showCloseButton = true,
   onClose,
@@ -221,27 +225,26 @@ export const ModalHeaderComponent: React.FC<ModalHeaderProps> = ({
 }) => {
   return (
     <ModalHeader>
-      {title && <Text variant="h5">{title}</Text>}
+      {title && <Heading level="h5">{title}</Heading>}
       {children}
-      {/* {showCloseButton && (
-        <Icon 
-          name="close" 
-          onPress={onClose} 
-          size={24} 
-          color={theme.colors.text} 
-        />
-      )} */}
     </ModalHeader>
   );
 };
 
-export const ModalFooterComponent: React.FC<ModalFooterProps> = ({ children }) => {
+const ModalFooterComponent: React.FC<ModalFooterProps> = ({ children }) => {
   return (
     <ModalFooter>
       {children}
     </ModalFooter>
   );
 };
+
+// Attach subcomponents
+ModalComponent.Header = ModalHeaderComponent;
+ModalComponent.Body = ModalBody;
+ModalComponent.Footer = ModalFooterComponent;
+
+export const Modal = ModalComponent;
 
 // Convenience components for specific modal types
 export const AlertDialog: React.FC<ModalProps & { 
@@ -251,13 +254,13 @@ export const AlertDialog: React.FC<ModalProps & {
 }> = ({ title, message, buttons, ...props }) => {
   return (
     <Modal variant="basic" {...props}>
-      <ModalHeaderComponent title={title} />
-      <ModalBody>
+      <Modal.Header title={title} />
+      <Modal.Body>
         <Text>{message}</Text>
-      </ModalBody>
-      <ModalFooterComponent>
+      </Modal.Body>
+      <Modal.Footer>
         {buttons}
-      </ModalFooterComponent>
+      </Modal.Footer>
     </Modal>
   );
 };
@@ -280,18 +283,18 @@ export const ConfirmationDialog: React.FC<ModalProps & {
 }) => {
   return (
     <Modal variant="basic" {...props}>
-      <ModalHeaderComponent title={title} />
-      <ModalBody>
+      <Modal.Header title={title} />
+      <Modal.Body>
         <Text>{message}</Text>
-      </ModalBody>
-      <ModalFooterComponent>
+      </Modal.Body>
+      <Modal.Footer>
         <Button variant="outline" onPress={onCancel}>
           {cancelText}
         </Button>
         <Button onPress={onConfirm}>
           {confirmText}
         </Button>
-      </ModalFooterComponent>
+      </Modal.Footer>
     </Modal>
   );
 };

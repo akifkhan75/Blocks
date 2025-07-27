@@ -2,7 +2,7 @@ import React, { forwardRef, useState } from 'react';
 import styled from 'styled-components/native';
 import { TextInput, TextInputProps, View, Text, Platform } from 'react-native';
 import { useTheme } from '../../hooks/useTheme';
-// import { Icon } from '../Icon/Icon';
+import { Icon } from '../Icon/Icon';
 
 type InputVariant = 'filled' | 'outline' | 'underline';
 type InputSize = 'sm' | 'md' | 'lg';
